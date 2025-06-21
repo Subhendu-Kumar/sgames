@@ -1,16 +1,60 @@
-# sgames
+# S Games
 
-A new Flutter project.
+## Chess Game App
 
-## Getting Started
+A Flutter-based chess game application with an interactive board and comprehensive move tracking system.
 
-This project is a starting point for a Flutter application.
+### Screenshot
 
-A few resources to get you started if this is your first Flutter project:
+<div align="center">
+  <img src="assets/screenshots/Screenshot_1750505287.png" width="400" alt="Chess Game 1"/>
+</div>
+<p align="center"><i>Main game interface showing the chess board and pieces</i></p>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Subhendu-Kumar/sgames.git chess-game-app
+cd chess-game-app
+```
+
+2. Install dependencies:
+
+```bash
+flutter pub get
+```
+
+3. Ensure you have the chess piece images in the correct directory:
+
+```
+assets/
+  images/
+    wK.png  # White King
+    wQ.png  # White Queen
+    wR.png  # White Rook
+    wB.png  # White Bishop
+    wN.png  # White Knight
+    wP.png  # White Pawn
+    bK.png  # Black King
+    bQ.png  # Black Queen
+    bR.png  # Black Rook
+    bB.png  # Black Bishop
+    bN.png  # Black Knight
+    bP.png  # Black Pawn
+```
+
+4. Update your `pubspec.yaml` file to include the assets:
+
+```yaml
+flutter:
+  assets:
+    - assets/images/
+```
+
+5. Run the app:
+
+```bash
+flutter run
+```
