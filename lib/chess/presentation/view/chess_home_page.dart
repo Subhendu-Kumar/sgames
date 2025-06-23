@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:sgames/chess/presentation/view/chess_tutorial_page.dart';
 import 'package:sgames/core/utils/show_snackbar.dart';
 import 'package:sgames/chess/presentation/view/chess_board.dart';
 import 'package:sgames/chess/presentation/widgets/about_dialog_w.dart';
@@ -129,8 +130,14 @@ class ChessHomePage extends StatelessWidget {
                   SecondaryButton(
                     icon: Icons.school,
                     label: 'Tutorial',
-                    onPressed: () =>
-                        showSnackBar(context, "Tutorial coming soon!"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ChessTutorialPage(),
+                        ),
+                      );
+                    },
                   ),
                   // About Button
                   SecondaryButton(
