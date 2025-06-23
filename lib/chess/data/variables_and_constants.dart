@@ -79,7 +79,7 @@ final List<List<String>> initialBoard = [
 ];
 
 // knight move offsets
-List<List<int>> knightMoveOffsets = [
+final List<List<int>> knightMoveOffsets = [
   [-2, -1],
   [-2, 1],
   [-1, -2],
@@ -91,7 +91,7 @@ List<List<int>> knightMoveOffsets = [
 ];
 
 // bishop move offsets
-List<List<int>> bishopMoveOffsets = [
+final List<List<int>> bishopMoveOffsets = [
   [-1, -1],
   [-1, 1],
   [1, -1],
@@ -99,7 +99,7 @@ List<List<int>> bishopMoveOffsets = [
 ];
 
 // rook move offsets
-List<List<int>> rookMoveOffsets = [
+final List<List<int>> rookMoveOffsets = [
   [-1, 0],
   [0, -1],
   [1, 0],
@@ -107,7 +107,7 @@ List<List<int>> rookMoveOffsets = [
 ];
 
 // king move offsets
-List<List<int>> kingMoveOffsets = [
+final List<List<int>> kingMoveOffsets = [
   [-1, -1],
   [-1, 0],
   [-1, 1],

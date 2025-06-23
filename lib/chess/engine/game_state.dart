@@ -1,6 +1,7 @@
 import 'package:sgames/chess/engine/move.dart';
 import 'package:sgames/chess/data/variables_and_constants.dart';
 
+// This class represents the state of a chess game, including the board, move log, turn, and game status.
 class GameState {
   late List<List<String>> board;
   late List<Move> moveLog;
@@ -10,6 +11,7 @@ class GameState {
   late bool checkMate;
   late bool staleMate;
 
+  // Initialize game setup
   GameState() {
     board = List<List<String>>.from(
       initialBoard.map((row) => List<String>.from(row)),
@@ -361,18 +363,40 @@ class GameState {
 
   // Make a move on the board
   void makeMove(Move move) {
+    // Clear the piece from the old position
     board[move.fromRow][move.fromCol] = blank;
+    // Move the piece to the new position
     board[move.toRow][move.toCol] = move.movedPiece;
-    moveLog.add(move);
+    // Handle pawn promotion
+    if (move.isPawnPromotion) {
+      board[move.toRow][move.toCol] =
+          move.movedPiece[0] + queen; // Promote to queen
+    }
+    // Update king positions
+    if (move.movedPiece == whiteKing) {
+      whiteKingPosition = [move.toRow, move.toCol];
+    } else if (move.movedPiece == blackKing) {
+      blackKingPosition = [move.toRow, move.toCol];
+    }
+    moveLog.add(move); // Log the move added to the move log
     whiteTurn = !whiteTurn; // Switch turn after a move
   }
 
   // Undo the last move
   void undoMove() {
     if (moveLog.isNotEmpty) {
+      // Restore the board to the previous state
       Move lastMove = moveLog.removeLast();
+      // Restore the piece to its original position
       board[lastMove.fromRow][lastMove.fromCol] = lastMove.movedPiece;
+      // Clear the piece from the new position
       board[lastMove.toRow][lastMove.toCol] = lastMove.capturedPiece;
+      // Handle king position updates
+      if (lastMove.movedPiece == whiteKing) {
+        whiteKingPosition = [lastMove.fromRow, lastMove.fromCol];
+      } else if (lastMove.movedPiece == blackKing) {
+        blackKingPosition = [lastMove.fromRow, lastMove.fromCol];
+      }
       whiteTurn = !whiteTurn; // Switch turn back after undo
     }
   }
