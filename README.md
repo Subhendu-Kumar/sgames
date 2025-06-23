@@ -34,7 +34,8 @@ A classic Flutter tic-tac-toe game with clean design and intuitive gameplay mech
   <img src="assets/screenshots/Screenshot_1750678667.png" width="200" alt="Tic Tac Toe Home"/>
   <img src="assets/screenshots/Screenshot_1750678670.png" width="200" alt="Tic Tac Toe about"/>
   <img src="assets/screenshots/Screenshot_1750678676.png" width="200" alt="Tic Tac Toe tutorial"/>
-  <img src="assets/screenshots/Screenshot_1750678683.png" width="200" alt="Tic Tac Toe game play"/>
+  <img src="assets/screenshots/Screenshot_1750694750.png" width="200" alt="Tic Tac Toe game play"/>
+  <img src="assets/screenshots/Screenshot_1750694759.png" width="200" alt="Tic Tac Toe game play"/>
 </div>
 <p align="center"><i>Home screen and game interface</i></p>
 

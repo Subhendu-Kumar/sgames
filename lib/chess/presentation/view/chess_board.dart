@@ -54,6 +54,13 @@ class _ChessBoardState extends State<ChessBoard> {
     validMoves = [];
   }
 
+  void _resetGame() {
+    setState(() {
+      gameState = GameState();
+      _clearSelection();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -98,6 +105,11 @@ class _ChessBoardState extends State<ChessBoard> {
             ),
             backgroundColor: Colors.transparent,
             actions: [
+              IconButton(
+                icon: const Icon(Icons.restart_alt),
+                color: Colors.white,
+                onPressed: _resetGame,
+              ),
               IconButton(
                 icon: const Icon(Icons.undo),
                 color: Colors.white,
