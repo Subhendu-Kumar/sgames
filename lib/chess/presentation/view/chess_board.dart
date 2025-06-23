@@ -72,18 +72,31 @@ class _ChessBoardState extends State<ChessBoard> {
                       onTap: () {
                         setState(() {
                           if (selectedRow == null && piece != blank) {
+                            // Select a piece
                             selectedRow = row;
                             selectedCol = col;
                           } else if (selectedRow != null) {
-                            gameState.makeMove(
-                              Move(
-                                fromRow: selectedRow!,
-                                fromCol: selectedCol!,
-                                toRow: row,
-                                toCol: col,
-                                board: gameState.board,
-                              ),
+                            // Attempt to move
+                            Move attemptedMove = Move(
+                              fromRow: selectedRow!,
+                              fromCol: selectedCol!,
+                              toRow: row,
+                              toCol: col,
+                              board: gameState.board,
                             );
+                            // Check if attempted move is valid
+                            List<Move> validMoves = gameState.getValidMoves();
+                            bool isValid = validMoves.any(
+                              (move) =>
+                                  move.fromRow == attemptedMove.fromRow &&
+                                  move.fromCol == attemptedMove.fromCol &&
+                                  move.toRow == attemptedMove.toRow &&
+                                  move.toCol == attemptedMove.toCol,
+                            );
+                            if (isValid) {
+                              gameState.makeMove(attemptedMove);
+                            }
+                            // Clear selection in either case
                             selectedRow = null;
                             selectedCol = null;
                           }
