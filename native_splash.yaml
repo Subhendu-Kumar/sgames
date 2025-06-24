@@ -1,0 +1,11 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  background_image: "assets/logo/sgames_background.png"
+  image: "assets/logo/sgames_logo.png"
+  branding: "assets/logo/sgames_branding.png"
+  android_12:
+    color: "#FEF7FF"
+    image: "assets/logo/sgames_logo_12.png"
+    branding: "assets/logo/sgames_branding_12.png"
