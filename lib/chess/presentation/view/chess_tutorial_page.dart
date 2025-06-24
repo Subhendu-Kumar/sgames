@@ -9,13 +9,17 @@ class ChessTutorialPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('How to Play Chess'),
-        backgroundColor: const Color(0xFF5D4037),
+        backgroundColor: Colors.brown[800]!,
         foregroundColor: Colors.white,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF5D4037), Color(0xFF8D6E63), Color(0xFFD7CCC8)],
+            colors: [
+              Colors.brown[800]!,
+              Colors.brown[600]!,
+              Colors.brown[400]!,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

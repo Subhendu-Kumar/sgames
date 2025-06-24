@@ -10,13 +10,17 @@ class TicTacToeTutorialPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('How to Play Tic Tac Toe'),
-        backgroundColor: const Color(0xFF667eea),
+        backgroundColor: const Color(0xFFa8b8ff),
         foregroundColor: Colors.white,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF667eea), Color(0xFF764ba2), Color(0xFFa8b8ff)],
+            colors: [
+              Color(0xFFa8b8ff),
+              Theme.of(context).colorScheme.inversePrimary,
+              Theme.of(context).colorScheme.primary,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

@@ -15,7 +15,6 @@ class ChessBoard extends StatefulWidget {
 
 class _ChessBoardState extends State<ChessBoard> {
   GameState gameState = GameState();
-
   int? selectedRow;
   int? selectedCol;
   List<Move> validMoves = [];
@@ -61,6 +60,87 @@ class _ChessBoardState extends State<ChessBoard> {
     });
   }
 
+  bool _isInCheck() {
+    return gameState.isCheck();
+  }
+
+  void _checkGameOver() {
+    if (gameState.checkMate) {
+      _showGameOverDialog(
+        title: 'Checkmate!',
+        message: '${gameState.whiteTurn ? 'Black' : 'White'} wins!',
+      );
+    } else if (gameState.staleMate) {
+      _showGameOverDialog(title: 'Stalemate!', message: 'It\'s a draw!');
+    }
+  }
+
+  void _showGameOverDialog({required String title, required String message}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          content: Text(message, style: const TextStyle(fontSize: 18)),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _resetGame();
+              },
+              child: const Text('New Game'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Exit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Color? _getTileColor({
+    required int row,
+    required int col,
+    required bool isWhiteTile,
+    required bool isSelected,
+    required bool isValidMoveTarget,
+  }) {
+    // Check if the king of the current player is in check
+    // and highlight the king's tile if it is in check
+    bool isKingInCheck = false;
+    if (_isInCheck()) {
+      if (gameState.whiteTurn) {
+        // White is in check, highlight white king
+        isKingInCheck =
+            (row == gameState.whiteKingPosition[0] &&
+            col == gameState.whiteKingPosition[1]);
+      } else {
+        // Black is in check, highlight black king
+        isKingInCheck =
+            (row == gameState.blackKingPosition[0] &&
+            col == gameState.blackKingPosition[1]);
+      }
+    }
+    if (isKingInCheck) {
+      return Colors.red.withOpacity(0.8);
+    } else if (isSelected) {
+      return Colors.greenAccent.withOpacity(0.6);
+    } else if (isValidMoveTarget) {
+      return Colors.yellowAccent.withOpacity(0.6);
+    } else {
+      return isWhiteTile ? Colors.brown[100] : Colors.brown[700];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -78,9 +158,9 @@ class _ChessBoardState extends State<ChessBoard> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color.fromARGB(255, 227, 193, 180),
-              Color(0xFF8D6E63),
-              Color.fromARGB(255, 147, 98, 83),
+              Colors.brown[300]!,
+              Colors.brown[500]!,
+              Colors.brown[700]!,
             ],
             stops: const [0.0, 0.5, 1.0],
           ),
@@ -106,7 +186,7 @@ class _ChessBoardState extends State<ChessBoard> {
             backgroundColor: Colors.transparent,
             actions: [
               IconButton(
-                icon: const Icon(Icons.restart_alt),
+                icon: const Icon(Icons.refresh),
                 color: Colors.white,
                 onPressed: _resetGame,
               ),
@@ -166,7 +246,7 @@ class _ChessBoardState extends State<ChessBoard> {
                           ],
                         ),
                         child: Text(
-                          "${gameState.whiteTurn ? 'White' : 'Black'}'s Turn",
+                          "${gameState.whiteTurn ? 'White' : 'Black'}'s Turn${_isInCheck() ? ' - Check!' : ''}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -231,7 +311,6 @@ class _ChessBoardState extends State<ChessBoard> {
                                         toCol: col,
                                         board: gameState.board,
                                       );
-
                                       // Check if attempted move is valid
                                       List<Move> allValidMoves = gameState
                                           .getValidMoves();
@@ -244,10 +323,16 @@ class _ChessBoardState extends State<ChessBoard> {
                                             move.toRow == attemptedMove.toRow &&
                                             move.toCol == attemptedMove.toCol,
                                       );
-
                                       if (isValid) {
                                         gameState.makeMove(attemptedMove);
                                         _clearSelection();
+                                        gameState.getValidMoves();
+                                        Future.delayed(
+                                          const Duration(milliseconds: 100),
+                                          () {
+                                            _checkGameOver();
+                                          },
+                                        );
                                       } else {
                                         // Invalid move - try to select the clicked piece if it belongs to current player
                                         if (piece != blank &&
@@ -273,13 +358,13 @@ class _ChessBoardState extends State<ChessBoard> {
                                   width: tileSize,
                                   height: tileSize,
                                   decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? Colors.greenAccent.withOpacity(0.6)
-                                        : isValidMoveTarget
-                                        ? Colors.yellowAccent.withOpacity(0.6)
-                                        : isWhiteTile
-                                        ? Colors.brown[100]
-                                        : Colors.brown[700],
+                                    color: _getTileColor(
+                                      row: row,
+                                      col: col,
+                                      isWhiteTile: isWhiteTile,
+                                      isSelected: isSelected,
+                                      isValidMoveTarget: isValidMoveTarget,
+                                    ),
                                     border: Border.all(color: Colors.black12),
                                   ),
                                   child: Center(

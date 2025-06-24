@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sgames/core/view/about_page.dart';
 import 'package:sgames/core/widgets/game_card.dart';
 
 class HomeScreen extends StatelessWidget {
+  final Function(int)? onGameSelected;
   final List<Map<String, dynamic>> games = [
     {
       'title': 'Chess',
@@ -17,15 +19,23 @@ class HomeScreen extends StatelessWidget {
     },
   ];
 
-  HomeScreen({super.key});
+  HomeScreen({super.key, this.onGameSelected});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF00bbf9), Color(0xFF5a189a), Color(0xFF240046)],
+            colors: [
+              Theme.of(context).colorScheme.inversePrimary,
+              Color.lerp(
+                Theme.of(context).colorScheme.inversePrimary,
+                Colors.brown.shade400,
+                0.5,
+              )!,
+              Colors.brown.shade600,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -60,10 +70,7 @@ class HomeScreen extends StatelessWidget {
                         description: game['description'],
                         icon: game['icon'],
                         onTap: () {
-                          DefaultTabController.of(
-                            context,
-                          ).animateTo(game['route']);
-                          // Or if using `MainPage`, set selectedIndex with `Provider` or callback.
+                          onGameSelected?.call(game['route'] as int);
                         },
                       );
                     },
@@ -73,6 +80,16 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AboutPage()),
+          );
+        },
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        child: const Icon(Icons.info),
       ),
     );
   }

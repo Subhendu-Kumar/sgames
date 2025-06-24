@@ -62,15 +62,8 @@ class _TicTacToeBoardState extends State<TicTacToeBoard> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tic Tac Toe Board'),
+          title: Text('Tic Tac Toe'),
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.restart_alt),
-              color: Colors.white,
-              onPressed: _resetGame,
-            ),
-          ],
         ),
         body: Padding(
           padding: EdgeInsets.all(10.0),
@@ -199,6 +192,11 @@ class _TicTacToeBoardState extends State<TicTacToeBoard> {
               );
             },
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _resetGame,
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          child: Icon(Icons.refresh),
         ),
       ),
     );

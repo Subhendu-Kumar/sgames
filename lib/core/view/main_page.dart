@@ -15,20 +15,24 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    HomeScreen(),
-    ChessHomePage(),
-    TicTacToeHomePage(),
-  ];
-
   void _onItemTapped(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
+  void _changeTab(int index) {
     setState(() => _selectedIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HomeScreen(onGameSelected: _changeTab),
+      ChessHomePage(),
+      TicTacToeHomePage(),
+    ];
+
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
