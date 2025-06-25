@@ -1,3 +1,5 @@
+// This file contains the About dialog for the Tic Tac Toe game, providing information about the game features and development.
+
 import 'package:flutter/material.dart';
 
 class AboutDialogW extends StatelessWidget {

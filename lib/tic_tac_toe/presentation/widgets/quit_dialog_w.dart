@@ -1,3 +1,5 @@
+// This file contains the Quit Dialog for Tic Tac Toe, allowing users to confirm quitting the game.
+
 import 'package:flutter/material.dart';
 
 class QuitDialogW extends StatelessWidget {

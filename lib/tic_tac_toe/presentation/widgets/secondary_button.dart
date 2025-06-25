@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+// This file contains a secondary button widget for Tic Tac Toe, used for actions like settings, tutorial, etc.
+
 import 'package:flutter/material.dart';
 
 class SecondaryButton extends StatelessWidget {

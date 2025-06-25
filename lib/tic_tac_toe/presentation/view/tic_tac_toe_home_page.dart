@@ -1,14 +1,50 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
+// This file contains the home page for the Tic Tac Toe game, allowing users to select game modes and start playing.
+// Also provides options for settings, tutorial, and about dialog.
 
 import 'package:flutter/material.dart';
 import 'package:sgames/core/utils/show_snackbar.dart';
+import 'package:sgames/tic_tac_toe/engine/game_mode.dart';
 import 'package:sgames/tic_tac_toe/presentation/view/tic_tac_toe_board.dart';
-import 'package:sgames/tic_tac_toe/presentation/view/tic_tac_toe_tutorial_page.dart';
 import 'package:sgames/tic_tac_toe/presentation/widgets/about_dialog_w.dart';
+import 'package:sgames/tic_tac_toe/presentation/widgets/game_mode_dialog.dart';
 import 'package:sgames/tic_tac_toe/presentation/widgets/secondary_button.dart';
+import 'package:sgames/tic_tac_toe/presentation/view/tic_tac_toe_tutorial_page.dart';
 
 class TicTacToeHomePage extends StatelessWidget {
   const TicTacToeHomePage({super.key});
+
+  void showGameModeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return GameModeDialog();
+      },
+    ).then((result) {
+      if (result != null) {
+        switch (result) {
+          case GameMode.passAndPlay:
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TicTacToeBoard(gameMode: result),
+              ),
+            );
+            break;
+          case GameMode.playWithComputer:
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TicTacToeBoard(gameMode: result),
+              ),
+            );
+            break;
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +112,7 @@ class TicTacToeHomePage extends StatelessWidget {
                 // Play Button
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TicTacToeBoard(),
-                      ),
-                    );
+                    showGameModeDialog(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

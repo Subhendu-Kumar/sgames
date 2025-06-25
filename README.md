@@ -9,6 +9,23 @@ A collection of classic Flutter-based game applications featuring interactive ga
 
 ## Games Included
 
+### Tic Tac Toe Game App
+
+A classic Flutter tic-tac-toe game with clean design and intuitive gameplay mechanics.
+
+#### Screenshots
+
+<div align="center">
+  <img src="assets/screenshots/Screenshot_1750678667.png" width="200" alt="Tic Tac Toe Home"/>
+  <img src="assets/screenshots/Screenshot_1750678670.png" width="200" alt="Tic Tac Toe about"/>
+  <img src="assets/screenshots/Screenshot_1750678676.png" width="200" alt="Tic Tac Toe tutorial"/>
+  <img src="assets/screenshots/Screenshot_1750836583.png" width="200" alt="Tic Tac Toe game selection"/>
+  <img src="assets/screenshots/Screenshot_1750836600.png" width="200" alt="Tic Tac Toe play with AI"/>
+  <img src="assets/screenshots/Screenshot_1750694750.png" width="200" alt="Tic Tac Toe game play"/>
+  <img src="assets/screenshots/Screenshot_1750694759.png" width="200" alt="Tic Tac Toe game play"/>
+</div>
+<p align="center"><i>Home screen and game interface</i></p>
+
 ### Chess Game App
 
 A Flutter-based chess game application with an interactive board and comprehensive move tracking system.
@@ -21,21 +38,6 @@ A Flutter-based chess game application with an interactive board and comprehensi
   <img src="assets/screenshots/Screenshot_1750678613.png" width="200" alt="Chess Game tutorial"/>
   <img src="assets/screenshots/Screenshot_1750678653.png" width="200" alt="Chess Game play"/>
   <img src="assets/screenshots/Screenshot_1750678660.png" width="200" alt="Chess Game quit"/>
-</div>
-<p align="center"><i>Home screen and game interface</i></p>
-
-### Tic Tac Toe Game App
-
-A classic Flutter tic-tac-toe game with clean design and intuitive gameplay mechanics.
-
-#### Screenshots
-
-<div align="center">
-  <img src="assets/screenshots/Screenshot_1750678667.png" width="200" alt="Tic Tac Toe Home"/>
-  <img src="assets/screenshots/Screenshot_1750678670.png" width="200" alt="Tic Tac Toe about"/>
-  <img src="assets/screenshots/Screenshot_1750678676.png" width="200" alt="Tic Tac Toe tutorial"/>
-  <img src="assets/screenshots/Screenshot_1750694750.png" width="200" alt="Tic Tac Toe game play"/>
-  <img src="assets/screenshots/Screenshot_1750694759.png" width="200" alt="Tic Tac Toe game play"/>
 </div>
 <p align="center"><i>Home screen and game interface</i></p>
 
@@ -82,6 +84,20 @@ assets/
   images/
     x_icon.png  # X mark (optional)
     o_icon.png  # O mark (optional)
+```
+
+### App logo Assets
+
+```
+
+assets/
+  logo/
+    sg_logo.png             # app logo for ios and android
+    sgames_background.png   # background image for ios
+    sgames_branding_12.png  # branding logo for android 12 and above
+    sgames_branding.png     # branding logo for android 11 and below and ios
+    sgames_logo_12.png      # logo for android 12 and above
+    sgames_logo.png         # logo for android 11 and below and ios
 ```
 
 4. Update your `pubspec.yaml` file to include the assets:
@@ -134,6 +150,7 @@ sgames/
 │   │   ├── engine/
 │   │   └── presentation/
 │   ├── tic_tac_toe/
+│   │   ├── ai/
 │   │   ├── data/
 │   │   ├── engine/
 │   │   └── presentation/
@@ -145,8 +162,8 @@ sgames/
 │   └── main.dart
 ├── assets/
 │   ├── images/
-│   └── screenshots/
-└── pubspec.yaml
+│   ├── logo/
+└── └── screenshots/
 ```
 
 ## Contributing

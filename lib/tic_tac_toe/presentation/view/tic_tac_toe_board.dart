@@ -1,12 +1,19 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
+// This file contails the Tic Tac Toe board UI and game logic.
+// It manages the game state, player turns, and integrates with the AI for computer mode.
+
 import 'package:flutter/material.dart';
-import 'package:sgames/tic_tac_toe/data/variables_and_constants.dart';
+import 'package:sgames/tic_tac_toe/engine/game_mode.dart';
+import 'package:sgames/tic_tac_toe/ai/tic_tac_toe_ai.dart';
 import 'package:sgames/tic_tac_toe/engine/game_engine.dart';
+import 'package:sgames/tic_tac_toe/data/variables_and_constants.dart';
 import 'package:sgames/tic_tac_toe/presentation/widgets/quit_dialog_w.dart';
 
 class TicTacToeBoard extends StatefulWidget {
-  const TicTacToeBoard({super.key});
+  final String gameMode;
+
+  const TicTacToeBoard({super.key, required this.gameMode});
 
   @override
   State<TicTacToeBoard> createState() => _TicTacToeBoardState();
@@ -14,16 +21,95 @@ class TicTacToeBoard extends StatefulWidget {
 
 class _TicTacToeBoardState extends State<TicTacToeBoard> {
   late GameEngine gameEngine;
+  late TicTacToeAi? gameAi;
 
   @override
   void initState() {
     super.initState();
-    gameEngine = GameEngine();
+    _initializeGame();
+  }
+
+  void _initializeGame() {
+    // Create the game engine first
+    gameEngine = GameEngine(
+      board: List.filled(9, ""),
+      currentPlayer: cross,
+      winner: empty,
+      gameMode: widget.gameMode,
+      humanPlayer: cross,
+    );
+
+    // Set the game mode
+    if (widget.gameMode == GameMode.playWithComputer) {
+      gameEngine.setGameMode(GameMode.playWithComputer);
+      // Create AI after gameEngine is set up
+      gameAi = TicTacToeAi(gameEngine: gameEngine);
+    } else {
+      gameEngine.setGameMode(GameMode.passAndPlay);
+      gameAi = null; // Clear AI reference for pass and play
+    }
   }
 
   void _resetGame() {
     setState(() {
-      gameEngine = GameEngine();
+      // Reset the game engine properties instead of creating new instance
+      gameEngine.board = List.filled(9, "");
+      gameEngine.currentPlayer = cross;
+      gameEngine.winner = empty;
+
+      // Keep the same gameEngine instance so AI reference remains valid
+      // Only recreate AI if it's computer mode and AI doesn't exist
+      if (widget.gameMode == GameMode.playWithComputer && gameAi == null) {
+        gameAi = TicTacToeAi(gameEngine: gameEngine);
+      }
+    });
+
+    // If it's computer mode and computer goes first, make the first move
+    if (widget.gameMode == GameMode.playWithComputer &&
+        gameEngine.currentPlayer != gameEngine.humanPlayer) {
+      _makeComputerMove();
+    }
+  }
+
+  // Helper method to check if game has ended
+  bool _checkGameEnd() {
+    // Check for draw
+    if (gameEngine.board.every((el) => el.isNotEmpty) &&
+        gameEngine.winner.isEmpty) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        _showDialog(context, "Match Draw!!!");
+      });
+      return true;
+    }
+
+    // Check for winner
+    if (gameEngine.winner.isNotEmpty) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        _showDialog(context, '${gameEngine.winner} wins!');
+      });
+      return true;
+    }
+
+    return false;
+  }
+
+  // Computer move logic
+  void _makeComputerMove() {
+    // Add a delay to make it feel more natural
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (gameEngine.winner.isEmpty &&
+          !gameEngine.board.every((el) => el.isNotEmpty)) {
+        int computerMoveIndex = gameAi!.getComputerMoveIndex();
+
+        if (gameEngine.makeMove(computerMoveIndex)) {
+          setState(() {
+            // Update UI after computer move
+          });
+
+          // Check for game end after computer move
+          _checkGameEnd();
+        }
+      }
     });
   }
 
@@ -46,6 +132,22 @@ class _TicTacToeBoardState extends State<TicTacToeBoard> {
           ],
         );
       },
+    );
+  }
+
+  Widget _getMatchText(String message) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Text(
+        message,
+        style: TextStyle(
+          color: Colors.deepPurple.shade700,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.5,
+        ),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 
@@ -119,32 +221,24 @@ class _TicTacToeBoardState extends State<TicTacToeBoard> {
                           bool isLastCol = col == 2;
                           return GestureDetector(
                             onTap: () {
+                              // Player makes their move
                               if (gameEngine.makeMove(index)) {
                                 setState(() {
-                                  // Update the UI after a move
+                                  // Update the UI after player move
                                 });
-                              }
-                              if (gameEngine.board.every(
-                                    (el) => el.isNotEmpty,
-                                  ) &&
-                                  gameEngine.winner.isEmpty) {
-                                Future.delayed(
-                                  const Duration(milliseconds: 200),
-                                  () {
-                                    _showDialog(context, "Match Draw!!!");
-                                  },
-                                );
-                              }
-                              if (gameEngine.winner.isNotEmpty) {
-                                Future.delayed(
-                                  const Duration(milliseconds: 200),
-                                  () {
-                                    _showDialog(
-                                      context,
-                                      '${gameEngine.winner} wins!',
-                                    );
-                                  },
-                                );
+
+                                // Check for game end after player move
+                                if (_checkGameEnd()) {
+                                  return; // Exit if game ended
+                                }
+
+                                // If playing with computer and it's computer's turn, make computer move
+                                if (gameEngine.gameMode ==
+                                        GameMode.playWithComputer &&
+                                    gameEngine.currentPlayer !=
+                                        gameEngine.humanPlayer) {
+                                  _makeComputerMove();
+                                }
                               }
                             },
                             child: Container(
@@ -186,6 +280,12 @@ class _TicTacToeBoardState extends State<TicTacToeBoard> {
                           );
                         },
                       ),
+                    ),
+                    const SizedBox(height: 20),
+                    _getMatchText(
+                      widget.gameMode == GameMode.playWithComputer
+                          ? "🧠 Human vs AI Match 🤖"
+                          : "🧠 Human vs Human Match 🧠",
                     ),
                   ],
                 ),

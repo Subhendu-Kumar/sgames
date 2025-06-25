@@ -1,5 +1,8 @@
 // ignore_for_file: must_be_immutable
 
+// This file contains a Tutorial Card widget for displaying tutorial information in the Tic Tac Toe game.
+// The card includes a title and description, styled for clarity and readability.
+
 import 'package:flutter/material.dart';
 
 class TutorialCard extends StatelessWidget {

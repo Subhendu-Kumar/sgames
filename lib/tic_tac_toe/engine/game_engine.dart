@@ -1,16 +1,23 @@
+// This file provides the game engine for Tic Tac Toe, managing the game state, player turns, and checking for winners.
+// It also includes the game mode and player management.
+
+import 'package:sgames/tic_tac_toe/engine/game_mode.dart';
 import 'package:sgames/tic_tac_toe/data/variables_and_constants.dart';
 
-// Game state variables
 class GameEngine {
-  late List<String> board;
-  late String currentPlayer;
-  late String winner;
+  List<String> board;
+  String currentPlayer;
+  String winner;
+  String gameMode;
+  String humanPlayer;
 
-  GameEngine() {
-    board = List.filled(9, empty);
-    currentPlayer = cross;
-    winner = empty;
-  }
+  GameEngine({
+    required this.board,
+    required this.currentPlayer,
+    required this.winner,
+    required this.gameMode,
+    required this.humanPlayer,
+  });
 
   bool makeMove(int position) {
     if (position < 0 ||
@@ -37,5 +44,13 @@ class GameEngine {
       }
     }
     return false; // No winner yet
+  }
+
+  void setGameMode(String mode) {
+    gameMode = mode;
+    if (mode == GameMode.playWithComputer) {
+      humanPlayer = cross;
+      // Computer will be 'O'
+    }
   }
 }

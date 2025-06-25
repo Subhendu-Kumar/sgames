@@ -1,7 +1,8 @@
+// This file contains the Tic Tac Toe tutorial page, explaining the game rules and how to play.
+
 import 'package:flutter/material.dart';
 import 'package:sgames/tic_tac_toe/presentation/widgets/tutorial_card.dart';
 
-// Tutorial Page
 class TicTacToeTutorialPage extends StatelessWidget {
   const TicTacToeTutorialPage({super.key});
 
